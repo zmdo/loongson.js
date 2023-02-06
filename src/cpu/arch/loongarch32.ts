@@ -526,8 +526,6 @@ export default interface Loongarch32 {
 
     // 2.2.1 FCMP.cond.{S/D}
 
-    // FCMP_COND_S ( cond:number ,cc:number, fj:number, fk:number ) : void;
-
     FCMP_CAF_S  ( cc:number, fj:number, fk:number ) : void;
     
     FCMP_CAF_D  ( cc:number, fj:number, fk:number ) : void;
