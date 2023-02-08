@@ -7,7 +7,7 @@ export default class LoongarchEmulator {
     /**
      * 执行启动模拟的 Longarch 架构 CPU
      */
-    public static Start() : void {
+    public static start() : void {
         
     }
 

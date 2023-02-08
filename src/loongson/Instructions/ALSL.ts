@@ -1,6 +1,6 @@
 import { W,WU,D } from "./common/tag";
 import { L2_MASK, L32_MASK } from "./common/mask";
-import LoongsonRegisterGroup from "../../cpu/register";
+import LoongsonRegisterGroup from "../register";
 import { SignExtend, ZeroExtend } from "./common/sign";
 
 namespace LoongarchTemplate {

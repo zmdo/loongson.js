@@ -1,6 +1,6 @@
 import { D } from "./common/tag";
-import { L12_MASK, L32_MASK, L52_MASK } from "./common/mask";
-import LoongsonRegisterGroup from "../../cpu/register";
+import { L12_MASK, L52_MASK } from "./common/mask";
+import LoongsonRegisterGroup from "../register";
 
 namespace LoongarchTemplate {
 

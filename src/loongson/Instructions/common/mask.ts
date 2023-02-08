@@ -4,6 +4,7 @@
 
 export const LA_32BITS_MASK = 0xFFFFFFFF;
 
+// 由于 Javascript 脚本限制 > 2^53 次方的数就会出现错误
 export const LA_64BITS_MASK = 0xFFFFFFFFFFFFFFFF;
 
 export const L2_MASK = 0x3;
