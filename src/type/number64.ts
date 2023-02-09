@@ -33,6 +33,87 @@ export default class ReadonlyNumber64 {
         return new ReadonlyNumber64(this._h32,this._l32);
     }
 
+    // +---------+
+    //   移位运算
+    // +---------+
+
+    /**
+     * 左移 n 位
+     * @param n 左移的位数
+     * @returns 左移 n 位后的结果
+     */
+    public left ( n:number ) : ReadonlyNumber64 {
+
+		if (n >= 64) {
+			return ReadonlyNumber64.ZERO;
+		} else if ( n == 0 ) {
+			return this.copy();
+		} else if ( n >= 32 ) {
+
+			// 如果左移位数大于等于 32，说明原高 32 位都被抹除了
+			// 低 32 位的数据会经过右移后填充到高 32 位中
+			// 这里要在保证精度的情况下获取位移后的结果
+
+			let dLen:number = 64 - n;
+			let dh:number;
+			if (dLen == 32) {
+				dh = this._l32;
+			} else {
+				dh = (this._l32 & ~ ( - (1 << dLen)));
+			}
+			let nh:number = dh << (32 - dLen);
+			return new ReadonlyNumber64(nh,0);
+		} else {
+
+			let nh:number;
+			let nl:number;
+
+			// 这里获取的是高/低 32 位需要保留的数字的个数
+			let dLen:number = 32 - n;
+
+			// 该值为低 32 位位移后需要填充到高 32 位的数字
+			let lh:number = (this._l32 & - (1 << dLen)) >>> dLen;
+			nh = ((this._h32 & ~ (- (1 << dLen))) << n) | lh;
+			nl = (this._l32 & ~ (- (1 << dLen))) << n;
+
+			return new ReadonlyNumber64(nh,nl);
+		}
+
+    }
+
+    /**
+     * 右移 n 位
+     * @param n 右移的位数
+     * @param sign 是否带符号（默认为带符号）
+     */
+    public right ( n:number, sign:boolean = true) : ReadonlyNumber64 {
+
+        // 进行范围限定
+		if (n > 63) {
+			if ( sign && (this._h32 >>> 31) > 0) {
+				return ReadonlyNumber64.BIT64;
+			} else {
+				return ReadonlyNumber64.ZERO;
+			}
+		}
+        
+        let _n:number = n;
+
+        // 无符号右移结果
+        let tmp = this.slice( 63 , _n );
+
+        // 判断是否需要带符号右移
+        if ( sign && (this._h32 >>> 31) != 0) {
+            if (_n < 32) {
+                return new ReadonlyNumber64(this._h32 >> _n,tmp.l32);
+            } else {
+                return new ReadonlyNumber64(0xFFFFFFFF,this._h32 >> (_n - 32));
+            }
+        }
+
+        return new ReadonlyNumber64(tmp.h32,tmp.l32);
+    }
+
     /**
      * 二进制切片
      * @param high 二进制最高位位置，取值范围 0 <= high < 64
