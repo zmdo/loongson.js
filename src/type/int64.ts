@@ -267,7 +267,7 @@ export default class Int64 extends ReadonlyNumber64 {
         for (let i = 63; i >= 0 ; i --) {
             // num = (num << 1) | ((_this >>> i) & 1L);
             num = num.left(1).or(_this.right(i,false).and(Int64.ONE));
-            if (num >= _n) {
+            if ( num.ge(_n) ) { // num >= _n
                 // res = (res << 1) | 1L ;
                 res = res.left(1).or(Int64.ONE);
                 // num = num - _n;
