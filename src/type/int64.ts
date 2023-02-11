@@ -216,24 +216,14 @@ export default class Int64 extends ReadonlyNumber64 {
             return Int64.ZERO;
         }
 
-        // 正负数判断
-
-        // TODO 这里做标准除法运算
-        let res:Int64 = Int64.ZERO;
-        let num:Int64 = Int64.ZERO;
-        for (let i = 63; i >= 0 ; i ++) {
-            // num = (num << 1) | ((n & 1 << i) >>> i)
-            num = num.left(1).or(n.and(Int64.ONE.left(i)).right(i,false));
-            if (num.ge(this)) {
-                // res = res | (1 << i)
-                res = res.or(Int64.ONE.left(i));
-                // num = num - this
-                num = num.sub(this);
-            }
-        }
-        return res;
+        return this._div(n).quotient;
     }
 
+    /**
+     * 取模运算
+     * @param n 被除数
+     * @returns 积
+     */
     public mod ( n:Int64 ) : Int64 {
 
         // 对特殊值处理
@@ -243,22 +233,55 @@ export default class Int64 extends ReadonlyNumber64 {
             return this;
         }
 
-        // 正负数判断
+        return this._div(n).remainder;
+    }
 
-        // TODO 这里做标准取模运算
-        let res:Int64 = Int64.ZERO;
-        let num:Int64 = Int64.ZERO;
-        for (let i = 63; i >= 0 ; i ++) {
-            // num = (num << 1) | ((n & 1 << i) >>> i)
-            num = num.left(1).or(n.and(Int64.ONE.left(i)).right(i,false));
-            if (num.ge(this)) {
-                // res = res | (1 << i)
-                res = res.or(Int64.ONE.left(i));
-                // num = num - this
-                num = num.sub(this);
+    private _div ( n:Int64 ) : {quotient:Int64,remainder:Int64} {
+
+        // 正负数判断
+        
+        let _n = n;
+        let _this = this.copy();
+
+        let nh = _n.h32 >> 31;
+        let th = _this.h32 >> 31;
+        let neg = (nh + th) == 1;
+        let mNeg = false;
+
+        // 将负数转换为正数
+        
+        if (th == 1) {
+            mNeg = false;
+            _this = _this.negate();
+        }
+
+        if (nh == 1) {
+            _n = _n.negate();
+        }
+        
+        // 经典的二进制除法运算法则
+
+        let res = Int64.ZERO; // 商 
+        let num = Int64.ZERO; // 余数
+
+        for (let i = 63; i >= 0 ; i --) {
+            // num = (num << 1) | ((_this >>> i) & 1L);
+            num = num.left(1).or(_this.right(i,false).and(Int64.ONE));
+            if (num >= _n) {
+                // res = (res << 1) | 1L ;
+                res = res.left(1).or(Int64.ONE);
+                // num = num - _n;
+                num = num.sub(_n);
+            } else {
+                // res = res << 1;
+                res = res.left(1);
             }
         }
-        return num;
+
+        return {
+            quotient  : neg  ? res.negate() : res,
+            remainder : mNeg ? num.negate() : num
+        };
     }
 
     /**
@@ -280,7 +303,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 左移的位数
      * @returns 左移 n 位后的结果
      */
-    public left ( n:number ) : Int64 {
+    public override left ( n:number ) : Int64 {
         return this.cast(super.left(n));
     }
 
@@ -289,8 +312,17 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 右移的位数
      * @param sign 是否带符号（默认为带符号）
      */
-    public right ( n:number, sign:boolean = true) : Int64 {
+    public override right ( n:number, sign:boolean = true) : Int64 {
         return this.cast(super.right(n));
+    }
+
+    /**
+     * 二进制切片
+     * @param high 二进制最高位位置，取值范围 0 <= high < 64
+     * @param low 二进制最低位位置，取值范围 0 <= low <= high < 64
+     */
+    public override slice(high: number, low: number): Int64 {
+        return this.cast(super.slice(high,low));
     }
 
     // +---------+
@@ -302,11 +334,8 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位与的值
      */
-    public and ( n:Int64 ) : Int64 {
-        return new Int64 (
-            n.h32 & this._h32,
-            n.l32 & this._l32
-        );
+    public override and ( n:Int64 ) : Int64 {
+        return this.cast(super.and(n));
     }
 
     /**
@@ -314,22 +343,16 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位或的值
      */
-    public or ( n:Int64 ) : Int64 {
-        return new Int64 (
-            n.h32 | this._h32,
-            n.l32 | this._l32
-        );
+    public override or ( n:Int64 ) : Int64 {
+        return this.cast(super.or(n));
     }
 
     /**
      * 按位取非
      * @returns 当前值按位取非的值
      */
-    public not () : Int64 {
-        return new Int64 (
-            ~ this._h32 ,
-            ~ this._l32 
-        );
+    public override not () : Int64 {
+        return this.cast(super.not());
     }
 
     /**
@@ -337,11 +360,8 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位异或的值
      */
-    public xor ( n:Int64 ) : Int64 {
-        return new Int64 (
-            n.h32 ^ this._h32 ,
-            n.l32 ^ this._l32
-        );
+    public override xor ( n:Int64 ) : Int64 {
+        return this.cast(super.xor(n));
     }
 
 }

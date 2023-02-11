@@ -162,6 +162,61 @@ export default class ReadonlyNumber64 {
         return new ReadonlyNumber64(nh,nl);
     }
 
+    // +---------+
+    //   逻辑运算
+    // +---------+
+
+    /**
+     * 按位求与
+     * @param n 进行逻辑运算的值
+     * @returns 当前值与 n 按位与的值
+     */
+    public and ( n:ReadonlyNumber64 ) : ReadonlyNumber64 {
+        return new ReadonlyNumber64 (
+            n.h32 & this._h32,
+            n.l32 & this._l32
+        );
+    }
+
+    /**
+     * 按位求或
+     * @param n 进行逻辑运算的值
+     * @returns 当前值与 n 按位或的值
+     */
+    public or ( n:ReadonlyNumber64 ) : ReadonlyNumber64 {
+        return new ReadonlyNumber64 (
+            n.h32 | this._h32,
+            n.l32 | this._l32
+        );
+    }
+
+    /**
+     * 按位取非
+     * @returns 当前值按位取非的值
+     */
+    public not () : ReadonlyNumber64 {
+        return new ReadonlyNumber64 (
+            ~ this._h32 ,
+            ~ this._l32 
+        );
+    }
+
+    /**
+     * 异或
+     * @param n 进行逻辑运算的值
+     * @returns 当前值与 n 按位异或的值
+     */
+    public xor ( n:ReadonlyNumber64 ) : ReadonlyNumber64 {
+        return new ReadonlyNumber64 (
+            n.h32 ^ this._h32 ,
+            n.l32 ^ this._l32
+        );
+    }
+
+    // +---------+
+    //   常用功能
+    // +---------+
+
     /**
      * 判断该数是否与 n 相等
      * @param n 比较的数

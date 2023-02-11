@@ -27,7 +27,7 @@ export default class Uint64 extends ReadonlyNumber64 {
      * @param n 左移的位数
      * @returns 左移 n 位后的结果
      */
-    public left ( n:number ) : Uint64 {
+    public override left ( n:number ) : Uint64 {
         return this.cast(super.left(n));
     }
 
@@ -35,7 +35,7 @@ export default class Uint64 extends ReadonlyNumber64 {
      * 右移 n 位
      * @param n 右移的位数
      */
-    public right ( n:number ) : Uint64 {
+    public override right ( n:number ) : Uint64 {
         return this.cast(super.right(n,false));
     }
 

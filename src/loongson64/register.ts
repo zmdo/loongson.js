@@ -1,5 +1,8 @@
 import Float64 from "../type/float64";
-import Int64 from "../type/int64";
+import ReadonlyNumber64 from "../type/number64";
+
+type R64 = ReadonlyNumber64;
+const ZERO = ReadonlyNumber64.ZERO;
 
 export default class LoongsonRegisterGroup {
 
@@ -11,7 +14,7 @@ export default class LoongsonRegisterGroup {
      * 不过，PC 寄存器可以作为一些非转移类指令的源操作数而被直接读取。
      * PC 的宽度总是与 {@link GR 通用寄存器} 的宽度一致
      */
-    PC:[Int64] = [Int64.ZERO];
+    PC:[R64] = [ZERO];
     
     /**
      * **通用寄存器（General-purpose Register，简称 GR）**
@@ -19,15 +22,15 @@ export default class LoongsonRegisterGroup {
      * 通用寄存器 GR 有 32 个，记为 r0 ~ r31 ，其中第 0 号寄存器
      * r0 的值恒为 0 。GR 位宽是 64 比特。
      */
-    GR:Int64[] = [
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r0  ~ r3
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r4  ~ r7
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r8  ~ r11
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r12 ~ r15
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r16 ~ r19
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r20 ~ r23
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r24 ~ r27
-        Int64.ZERO,Int64.ZERO,Int64.ZERO,Int64.ZERO, // r28 ~ r31
+    GR:R64[] = [
+        ZERO,ZERO,ZERO,ZERO, // r0  ~ r3
+        ZERO,ZERO,ZERO,ZERO, // r4  ~ r7
+        ZERO,ZERO,ZERO,ZERO, // r8  ~ r11
+        ZERO,ZERO,ZERO,ZERO, // r12 ~ r15
+        ZERO,ZERO,ZERO,ZERO, // r16 ~ r19
+        ZERO,ZERO,ZERO,ZERO, // r20 ~ r23
+        ZERO,ZERO,ZERO,ZERO, // r24 ~ r27
+        ZERO,ZERO,ZERO,ZERO, // r28 ~ r31
     ];
 
     /**
