@@ -70,34 +70,34 @@ export default class Int64 extends ReadonlyNumber64 {
             if (neg) { 
                 // 如果是负数，变成正数
                 _c = this.negate();
-                _n = this.negate();
+                _n = n.negate();
             } else {
                 _c = this;
                 _n = n;
             }
 
             if (_c.h32 > _n.h32) {
-                return neg;
-            } else if (_c.h32 < _n.h32) {
                 return !neg;
+            } else if (_c.h32 < _n.h32) {
+                return neg;
             } else {
                 let _cls = _c.l32 >>> 31;
                 let _nls = _n.l32 >>> 31;
                 if (_cls > _nls) { 
                     // 如果当前值低 32 位的首数字大于 n 低32位的首数字
-                    return neg; 
+                    return !neg; 
                 } else if (_cls < _nls) {
                     // 如果当前值低 32 位的首数字小于 n 低32位的首数字
-                    return !neg;
+                    return neg;
                 } else {
                     // 如果当前值低 32 位的首数字等于 n 低32位的首数字
                     // 那么就比较后 31 位数字的大小
                     let _cl = _c.l32 & 0x7FFFFFFF;
                     let _nl = _n.l32 & 0x7FFFFFFF;
                     if (_cl > _nl) {
-                        return neg;
-                    } else {
                         return !neg;
+                    } else {
+                        return neg;
                     }
                 }
             }

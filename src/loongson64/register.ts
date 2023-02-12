@@ -2,6 +2,7 @@ import Float64 from "../type/float64";
 import ReadonlyNumber64 from "../type/number64";
 
 type R64 = ReadonlyNumber64;
+type R32 = number;
 const ZERO = ReadonlyNumber64.ZERO;
 
 export default class LoongsonRegisterGroup {
@@ -50,7 +51,7 @@ export default class LoongsonRegisterGroup {
      * 较结果为真则置 1 ，否则置 0  。浮点分支指令的判断条件来自于
      * 条件标志寄存器。
      */
-    public CFR : [number] = [0];
+    public CFR : [R32] = [0];
 
     /**
      * **浮点控制状态寄存器（Floating-point Control Status Register，简称 FCSR）**
@@ -58,7 +59,7 @@ export default class LoongsonRegisterGroup {
      * 浮点控制状态寄存器 FCSR 有 4 个，记为 fcsr0 ~ fcsr3 ，位宽均
      * 为 32 比特。
      */
-    public FCSR : number[] = [0,0,0,0];
+    public FCSR : R32[] = [0,0,0,0];
 
     /**
      * 通用寄存器的位宽
