@@ -15,7 +15,7 @@ export default class LoongsonRegisterGroup {
      * 不过，PC 寄存器可以作为一些非转移类指令的源操作数而被直接读取。
      * PC 的宽度总是与 {@link GR 通用寄存器} 的宽度一致
      */
-    PC:[R64] = [ZERO];
+    public PC:[R64] = [ZERO];
     
     /**
      * **通用寄存器（General-purpose Register，简称 GR）**
@@ -23,7 +23,7 @@ export default class LoongsonRegisterGroup {
      * 通用寄存器 GR 有 32 个，记为 r0 ~ r31 ，其中第 0 号寄存器
      * r0 的值恒为 0 。GR 位宽是 64 比特。
      */
-    GR:R64[] = [
+    public GR:R64[] = [
         ZERO,ZERO,ZERO,ZERO, // r0  ~ r3
         ZERO,ZERO,ZERO,ZERO, // r4  ~ r7
         ZERO,ZERO,ZERO,ZERO, // r8  ~ r11
@@ -38,7 +38,7 @@ export default class LoongsonRegisterGroup {
      * **浮点寄存器（Floating-point Register，简称 FR）**
      * 浮点寄存器 FR 有 32 个，记为 f0 ~ f31 。
      */
-    FR:Float64[] = [
+    public FR:Float64[] = [
         
     ];
 
