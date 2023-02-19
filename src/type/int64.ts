@@ -22,7 +22,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 64 位只读数
      * @returns 64 位整型数
      */
-    public cast ( n:ReadonlyNumber64 ) : Int64 {
+    public static cast ( n:ReadonlyNumber64 ) : Int64 {
         return new Int64(n.h32,n.l32);
     }
 
@@ -196,7 +196,8 @@ export default class Int64 extends ReadonlyNumber64 {
             }
             // 高 32 位
             if ( ((this._h32 >>> i) & 1) != 0 ) {
-                sum = sum.add(new Int64(n.l32 << i,0));
+                let dh = n.l32 << i;
+                sum = sum.add(new Int64(dh,0));
             }
         }
         return sum;
@@ -236,6 +237,13 @@ export default class Int64 extends ReadonlyNumber64 {
         return this._div(n).remainder;
     }
 
+    /**
+     * 标准整型除法运算
+     * @param n 被除数
+     * @returns
+     * - quotient : 商
+     * - remainder : 余数
+     */
     private _div ( n:Int64 ) : {quotient:Int64,remainder:Int64} {
 
         // 正负数判断
@@ -245,13 +253,16 @@ export default class Int64 extends ReadonlyNumber64 {
 
         let nh = _n.h32 >> 31;
         let th = _this.h32 >> 31;
-        let neg = (nh + th) == 1;
-        let mNeg = false;
+
+        // 商负数标志
+        let qNeg = (nh + th) == 1;
+        // 余数负数标志
+        let rNeg = false;
 
         // 将负数转换为正数
         
         if (th == 1) {
-            mNeg = false;
+            rNeg = true;
             _this = _this.negate();
         }
 
@@ -279,8 +290,8 @@ export default class Int64 extends ReadonlyNumber64 {
         }
 
         return {
-            quotient  : neg  ? res.negate() : res,
-            remainder : mNeg ? num.negate() : num
+            quotient  : qNeg ? res.negate() : res,
+            remainder : rNeg ? num.negate() : num
         };
     }
 
@@ -304,7 +315,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @returns 左移 n 位后的结果
      */
     public override left ( n:number ) : Int64 {
-        return this.cast(super.left(n));
+        return Int64.cast(super.left(n));
     }
 
     /**
@@ -313,7 +324,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param sign 是否带符号（默认为带符号）
      */
     public override right ( n:number, sign:boolean = true) : Int64 {
-        return this.cast(super.right(n));
+        return Int64.cast(super.right(n));
     }
 
     /**
@@ -322,7 +333,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param low 二进制最低位位置，取值范围 0 <= low <= high < 64
      */
     public override slice(high: number, low: number): Int64 {
-        return this.cast(super.slice(high,low));
+        return Int64.cast(super.slice(high,low));
     }
 
     // +---------+
@@ -334,8 +345,8 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位与的值
      */
-    public override and ( n:Int64 ) : Int64 {
-        return this.cast(super.and(n));
+    public override and ( n:ReadonlyNumber64 ) : Int64 {
+        return Int64.cast(super.and(n));
     }
 
     /**
@@ -343,8 +354,8 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位或的值
      */
-    public override or ( n:Int64 ) : Int64 {
-        return this.cast(super.or(n));
+    public override or ( n:ReadonlyNumber64 ) : Int64 {
+        return Int64.cast(super.or(n));
     }
 
     /**
@@ -352,7 +363,7 @@ export default class Int64 extends ReadonlyNumber64 {
      * @returns 当前值按位取非的值
      */
     public override not () : Int64 {
-        return this.cast(super.not());
+        return Int64.cast(super.not());
     }
 
     /**
@@ -360,8 +371,8 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 进行逻辑运算的值
      * @returns 当前值与 n 按位异或的值
      */
-    public override xor ( n:Int64 ) : Int64 {
-        return this.cast(super.xor(n));
+    public override xor ( n:ReadonlyNumber64 ) : Int64 {
+        return Int64.cast(super.xor(n));
     }
 
 }

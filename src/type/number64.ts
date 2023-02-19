@@ -121,8 +121,8 @@ export default class ReadonlyNumber64 {
      */
     public slice ( high:number, low:number ) : ReadonlyNumber64 {
 
-        let nl:number = 0;
-        let nh:number = 0;
+        let nl:number;
+        let nh:number;
 		
         let _high:number = high + 1;
         let _low:number = low;
