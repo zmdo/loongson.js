@@ -22,8 +22,21 @@ export default class Int64 extends ReadonlyNumber64 {
      * @param n 64 位只读数
      * @returns 64 位整型数
      */
-    public static cast ( n:ReadonlyNumber64 ) : Int64 {
-        return new Int64(n.h32,n.l32);
+    public static cast ( n:ReadonlyNumber64 | number | bigint) : Int64 {
+        if (n instanceof ReadonlyNumber64) {
+            return new Int64(n.h32,n.l32);
+        } else if (n instanceof Number) { // number
+            // 符号扩展
+            if (n < 0) { // 即为负数
+                return new Int64(M32,M32 & n);
+            }
+            return new Int64(0,M32 & n);
+        } else if (n instanceof BigInt) { // bigint
+            return new Int64(
+                (<number>((n >> 32n) & 0xFFFFFFFFn)),
+                (<number>(n & 0xFFFFFFFFn)),
+            );
+        }
     }
 
     /**
@@ -32,6 +45,29 @@ export default class Int64 extends ReadonlyNumber64 {
      */
     public copy () : Int64 {
         return new Int64(this._h32,this._l32);
+    }
+
+    /**
+     * 将该值转换为 bigint 类型的整数
+     * @returns bigint 类型整数
+     */
+    public toBigInt() : bigint {
+
+        let neg = false;
+        let tmp:Int64;
+
+        // 获取符号
+        let s = this._h32 >>> 31;
+        if (s == 1) {
+            neg = true;
+            tmp = this.negate();
+        } else {
+            tmp = this.copy();
+        }
+
+        // 组装 bigint
+        let res = (BigInt(tmp.h32) << 32n) + BigInt(tmp.l32);
+        return neg ? -res : res;
     }
 
     // +---------+

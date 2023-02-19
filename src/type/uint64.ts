@@ -1,6 +1,8 @@
 import ReadonlyNumber64 from "./number64";
 import Int64 from "./int64";
 
+const M32:number = 0xFFFFFFFF;
+
 /**
  * 64位无符号整数
  */
@@ -20,9 +22,36 @@ export default class Uint64 extends Int64 {
      * @param n 64 位只读数
      * @returns 64 位整型数
      */
-     public static cast ( n:ReadonlyNumber64 ) : Uint64 {
-        return new Uint64(n.h32,n.l32);
+     public static override cast ( n:ReadonlyNumber64 | number | bigint ) : Uint64 {
+        if (n instanceof ReadonlyNumber64) {
+            return new Uint64(n.h32,n.l32);
+        } else if (n instanceof Number) { // number
+            // 无符号扩展
+            return new Uint64(0,M32 & n);
+        } else if (n instanceof BigInt) { // bigint
+            return new Uint64(
+                (<number>((n >> 32n) & 0xFFFFFFFFn)),
+                (<number>(n & 0xFFFFFFFFn)),
+            );
+        }
      }
+
+    /**
+     * 将该值转换为 bigint 类型的整数
+     * @returns bigint 类型整数
+     */
+    public toBigInt() : bigint {
+        // 组装 bigint
+        return (BigInt(this._h32) << 32n) + BigInt(this._l32);
+    }
+
+    /**
+     * 获取一个拷贝
+     * @returns 拷贝值
+     */
+    public override copy () : Uint64 {
+        return new Uint64(this._h32,this._l32);
+    }
 
     // +---------+
     //   比较运算
@@ -173,7 +202,7 @@ export default class Uint64 extends Int64 {
 
         for (let i = 63; i >= 0 ; i --) {
             // num = (num << 1) | ((_this >>> i) & 1L);
-            num = num.left(1).or(_this.right(i,false).and(Uint64.ONE));
+            num = num.left(1).or(_this.right(i).and(Uint64.ONE));
             if ( num.ge(_n) ) { // num >= _n
                 // res = (res << 1) | 1L ;
                 res = res.left(1).or(Uint64.ONE);
