@@ -1,6 +1,6 @@
-import ReadonlyNumber64 from "../../../type/number64";
-import Int64 from "../../../type/int64";
-import Uint64 from "../../../type/uint64";
+import ReadonlyNumber64 from "../../type/number64";
+import Int64 from "../../type/int64";
+import Uint64 from "../../type/uint64";
 
 /*
  * 位扩展

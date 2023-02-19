@@ -1,4 +1,4 @@
-import { D } from "./common/tag";
+import { D } from "../common/tag";
 import LoongsonRegisterGroup from "../register";
 import Int64 from "../../type/int64";
 

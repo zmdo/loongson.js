@@ -36,7 +36,6 @@ export default class LoongsonRegisterGroup {
 
     /**
      * **浮点寄存器（Floating-point Register，简称 FR）**
-     * 
      * 浮点寄存器 FR 有 32 个，记为 f0 ~ f31 。
      */
     FR:Float64[] = [

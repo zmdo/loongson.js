@@ -1,4 +1,4 @@
-import { SignExtend } from "./common/bitextend";
+import { SignExtend } from "../common/bitextend";
 import LoongsonRegisterGroup from "../register";
 import Int64 from "../../type/int64";
 

@@ -1,5 +1,5 @@
-import { W } from "./common/tag";
-import { SignExtend } from "./common/bitextend";
+import { W } from "../common/tag";
+import { SignExtend } from "../common/bitextend";
 import LoongsonRegisterGroup from "../register";
 
 namespace LoongarchTemplate {

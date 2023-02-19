@@ -1,5 +1,5 @@
 import LoongsonRegisterGroup from "../register";
-import {SignExtend} from "./common/bitextend";
+import {SignExtend} from "../common/bitextend";
 import Uint64 from "../../type/uint64";
 
 namespace LoongarchTemplate {

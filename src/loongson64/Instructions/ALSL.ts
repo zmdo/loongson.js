@@ -1,5 +1,5 @@
-import { W,WU,D } from "./common/tag";
-import {SignExtend, ZeroExtend} from "./common/bitextend";
+import { W,WU,D } from "../common/tag";
+import {SignExtend, ZeroExtend} from "../common/bitextend";
 import LoongsonRegisterGroup from "../register";
 import Int64 from "../../type/int64";
 
