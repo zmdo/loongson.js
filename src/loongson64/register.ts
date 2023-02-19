@@ -5,6 +5,10 @@ type R64 = ReadonlyNumber64;
 type R32 = number;
 const ZERO = ReadonlyNumber64.ZERO;
 
+/**
+ * 龙芯寄存器组
+ * @version 0.0.1
+ */
 export default class LoongsonRegisterGroup {
 
     /**
