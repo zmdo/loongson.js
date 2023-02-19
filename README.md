@@ -8,11 +8,11 @@
 
 ## 项目结构
 
-- build ： 构建脚本及工具
-- doc : 项目文档
-- img : 在模拟 Loongson 上运行的示例程序的镜像
-- src : 项目源码
-- tool : 一些项目相关的工具
+- [build](build) ： 构建脚本及工具
+- [doc](doc) : 项目文档
+- [img](img) : 在模拟 Loongson 上运行的示例程序的镜像
+- [src](src) : 项目源码
+- [tool](tool) : 一些项目相关的工具
 
 ## 开源协议
 
