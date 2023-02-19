@@ -1,3 +1,3 @@
-export class EmulatorConfig{
+export default class EmulatorConfig{
 
 }
